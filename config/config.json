@@ -1,6 +1,6 @@
 ﻿{
     "development" : {
-        "connectionString": "mongodb://username:password@ds253821.mlab.com:53821/userauth",
+        "connectionString": "mongodb://saranshj98:a12345678@ds253821.mlab.com:53821/userauth",
         "secret": "ssshhhhh"
     },
     "production" : {
