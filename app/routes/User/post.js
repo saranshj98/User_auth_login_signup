@@ -24,7 +24,8 @@ function authUser(req, res) {
                 if (docs.validPassword(password)) {
                     return res.send({
                         error : false,
-                        message : "Login done successfully"
+                        message : "Login done successfully",
+                        userDoc: docs
                     })
                 } 
 
@@ -81,7 +82,8 @@ function authUser(req, res) {
                     else {
                         return res.send({
                             error : false,
-                            message: "Signup done successfully"
+                            message: "Signup done successfully",
+                            userDoc: user
                         })
                     }
                     
