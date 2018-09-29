@@ -4,6 +4,7 @@ const cors          = require('cors');
 const bodyParser    = require('body-parser');
 
 const routes        = require('./app/routes');
+const jwt           = require('./_helpers/jwt');
 const errorHandler  = require('./_helpers/error-handler');
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -12,6 +13,13 @@ app.use(cors());
 
 // api routes
 app.use('/api', routes);
+
+
+// use JWT auth to secure the api
+app.use(jwt());
+
+// api routes
+app.use('/users', require('./users/users.controller'));
 
 // global error handler
 app.use(errorHandler);
