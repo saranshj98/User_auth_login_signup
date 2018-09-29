@@ -4,7 +4,7 @@
         "secret": "ssshhhhh"
     },
     "production" : {
-        "connectionString": "mongodb://localhost/mongo-api",
+        "connectionString": "mongodb://saranshj98:a12345678@ds253821.mlab.com:53821/userauth",
         "secret": "abcdefgh"
     }    
 }
