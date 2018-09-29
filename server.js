@@ -17,7 +17,7 @@ app.use('/api', routes);
 app.use(errorHandler);
 
 // start server
-const port = process.env.NODE_ENV === 'production' ? 80 : 8080;
+const port = process.env.PORT;
 const server = app.listen(port, function () {
     console.log('Server listening on port ' + port);
 });
