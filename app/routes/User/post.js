@@ -8,9 +8,59 @@ function authUser(req, res) {
     let username            = body.username;
     let email               = body.email;
 
-    //user try to login
-    if (!username) {
+    if(!email || !password) {
+        return res.send({
+            error : true,
+            message : "Enter all the details"
+        })
+    }
+
+    //user try to signup
+    else if(username) {
+        User.findOne({ "email": email }).exec((err, docs) => {
+            if (err) { 
+                return res.send({
+                    error : true,
+                    message : "Database Error"
+                })
+            }
+            
+            else if (docs) {
+                return res.send({
+                    error : true,
+                    message : 'User already exist with this email'
+                });
+            } 
+
+            else {
+                let user                           =   new User()
+                user.username                      =   username;
+                user.email                         =   email;
+                user.password                      =   user.generateHash(password);
+
+                user.save(er => {
+                    if (er) { 
+                        return res.send({
+                            error: true,
+                            message: "Database error"
+                        })
+                    }
+
+                    else {
+                        return res.send({
+                            error : false,
+                            message: "Signup done successfully",
+                            userDoc: user
+                        })
+                    }
                     
+                })
+            }
+        })
+    }
+
+    //user try to login
+    else {
         User.findOne({ "email": email }).exec((err, docs) => {
             if (err) { 
                 return res.send({
@@ -44,51 +94,6 @@ function authUser(req, res) {
                     message : "Enter valid email and password"
                 }) 
             } 
-        })
-    }
-
-    //user try to signup
-    else {
-        User.findOne({ "email": email }).exec((err, docs) => {
-            if (err) { 
-                console.log(err)
-                return res.send({
-                    error : true,
-                    message : "Database Error"
-                })
-            }
-            
-            if (docs) {
-                return res.send({
-                    error : true,
-                    message : 'User already exist with this email'
-                });
-            } 
-
-            if(!docs) {
-                let user                           =   new User()
-                user.username                      =   username;
-                user.email                         =   email;
-                user.password                      =   user.generateHash(password);
-
-                user.save(er => {
-                    if (er) { 
-                        return res.send({
-                            error: true,
-                            message: "Database error"
-                        })
-                    }
-
-                    else {
-                        return res.send({
-                            error : false,
-                            message: "Signup done successfully",
-                            userDoc: user
-                        })
-                    }
-                    
-                })
-            }
         })
     }
 }

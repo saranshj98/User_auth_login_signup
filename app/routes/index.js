@@ -1,4 +1,6 @@
 const reroutes  = require('express').Router();
+const db        = require('../../_helpers/db');
+const config    = require('../../config/config');
 const User      = require('./User');
 
 
