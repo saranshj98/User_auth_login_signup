@@ -9,6 +9,7 @@
         "start-prod": "NODE_ENV=production node ./server.js"
     },
     "dependencies": {
+        "async": "^2.6.1",
         "bcrypt-nodejs": "0.0.3",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.18.3",
