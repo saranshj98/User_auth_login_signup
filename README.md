@@ -16,15 +16,5 @@ Start the api by running npm run start from the command line in the project root
 
 You can test the api directly using Postman.
 
-# API EndPoints
-Signup API  - 
-Post localhost:3000/api/user/create 
-(required fields - username, email and password in request json body)
-
-
-login API   - 
-Post localhost:3000/api/user/create 
-(required fields - email and password in request json body)
-
 # Libraries
 Express, Mongoose, Nodemon, npm
