@@ -82,7 +82,7 @@ function authUser(req, res) {
                 else { 
                     return res.send({
                         error   : true,
-                        message : "Please enter a valid password"
+                        message : "Password is incorrect"
                     })
                 }
 
