@@ -1,10 +1,7 @@
 ﻿{
-    "development" : {
-        "connectionString": "mongodb://<username>:<passowrd>@ds253821.mlab.com:53821/userauth",
-        "secret": "ssshhhhh"
-    },
-    "production" : {
-        "connectionString": "mongodb://<username>:<password>@ds253821.mlab.com:53821/userauth",
-        "secret": "abcdefgh"
-    }    
+	"environment": "development",
+	"development": {
+		"mongoDBURL": "mongodb://localhost:27017/devUserAuth",
+		"secretKeyValue": "ssshhhhh"
+	}
 }

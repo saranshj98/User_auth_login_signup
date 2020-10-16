@@ -1,6 +1,5 @@
-const env       = process.env.NODE_ENV || 'development';
-const config    = require('./config.json')[env];
+const env = require('./config.json')['environment'];
+const config = require('./config.json')[env];
 
-module.exports  = config;
-
+module.exports = config;
 //to sign and verify jwt tokens - secret key in config

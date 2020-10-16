@@ -1,24 +1,36 @@
-﻿const express       = require('express');
-const app           = express();
-const cors          = require('cors');
-const bodyParser    = require('body-parser');
+﻿const express = require('express');
+const path = require('path');
+const morgan = require('morgan');
+const helmet = require('helmet');
+const cors = require('cors');
+const port = process.env.PORT || 3000;
+const logger = require('./app/helpers/logger');
+require('./config/mongoDb.config');
 
-const routes        = require('./app/routes');
-const errorHandler  = require('./_helpers/error-handler');
+const routes = require('./app/routes');
+const errorHandler = require('./app/helpers/error-handler');
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+const app = express();
 app.use(cors());
+app.use(helmet());
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+	return res.send('Hello world');
+});
 
 // api routes
-app.use('/api', routes);
-
+app.use('/', routes);
 
 // global error handler
 app.use(errorHandler);
 
 // start server
-const port = process.env.PORT ? process.env.PORT : 3000;
-const server = app.listen(port, function () {
-    console.log('Server listening on port ' + port);
+const server = app.listen(port, () => {
+	logger.info(`server on port ${port}`);
 });
+
+module.exports = app;

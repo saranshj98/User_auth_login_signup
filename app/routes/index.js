@@ -1,17 +1,11 @@
-const reroutes  = require('express').Router();
-const db        = require('../../_helpers/db');
-const config    = require('../../config/config');
-const User      = require('./User');
+const router = require('express').Router();
+const user = require('./user');
 
-
-reroutes.get('/', (req, res) => {
-    return res.send({
-        error   : false,
-        message : "Connected" 
-    })
+/* GET home page. */
+router.get('/', (req, res) => {
+	res.status(200).json({ message: 'Connected!' });
 });
 
+router.use('/user', user);
 
-reroutes.use('/user', User);
-
-module.exports = reroutes;
+module.exports = router;
