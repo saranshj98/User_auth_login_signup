@@ -1,7 +1,0 @@
-﻿{
-	"environment": "development",
-	"development": {
-		"mongoDBURL": "mongodb://localhost:27017/devUserAuth",
-		"secretKeyValue": "ssshhhhh"
-	}
-}
