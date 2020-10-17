@@ -8,7 +8,7 @@ const logger = require('./app/helpers/logger');
 require('./config/mongoDb.config');
 
 const routes = require('./app/routes');
-const errorHandler = require('./app/helpers/error-handler');
+const errorHandler = require('./app/helpers/errorHandler');
 
 const app = express();
 app.use(cors());
@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-	return res.send('Hello world');
+  return res.send('Hello world');
 });
 
 // api routes
@@ -30,7 +30,7 @@ app.use(errorHandler);
 
 // start server
 const server = app.listen(port, () => {
-	logger.info(`server on port ${port}`);
+  logger.info(`server on port ${port}`);
 });
 
 module.exports = app;
