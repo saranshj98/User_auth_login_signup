@@ -25,7 +25,8 @@ const UserSchema = new Schema(
       required: true
     },
     organizationName: {
-      type: String
+      type: String,
+      required: true
     },
     role: {
       type: String,
@@ -41,12 +42,12 @@ const UserSchema = new Schema(
 );
 
 UserSchema.methods.generateHash = function (password) {
-  var md5Pass = md5(password);
+  const md5Pass = md5(password);
   return bcrypt.hashSync(md5Pass, bcrypt.genSaltSync(8), null);
 };
 
 UserSchema.methods.validPassword = function (password) {
-  var md5Pass = md5(password);
+  const md5Pass = md5(password);
   return bcrypt.compareSync(md5Pass, this.password);
 };
 

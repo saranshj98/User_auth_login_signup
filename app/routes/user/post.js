@@ -11,7 +11,8 @@ async function createUser(req, res) {
 
     if (userDoc) {
       return res.status(400).json({
-        msg: 'User Already Exists'
+        error: true,
+        message: 'User Already Exists'
       });
     }
 
@@ -34,7 +35,7 @@ async function createUser(req, res) {
       },
       (err, token) => {
         if (err) throw err;
-        res.status(200).send({
+        return res.status(200).send({
           token
         });
       }
@@ -54,6 +55,7 @@ async function login(req, res) {
     });
     if (!user) {
       return res.status(400).json({
+        error: true,
         message: 'User Not Exist'
       });
     }
@@ -61,6 +63,7 @@ async function login(req, res) {
     const isMatch = user.validPassword(password, user.password);
     if (!isMatch) {
       return res.status(400).json({
+        error: true,
         message: 'Incorrect Password !'
       });
     }
@@ -80,7 +83,7 @@ async function login(req, res) {
       },
       (err, token) => {
         if (err) throw err;
-        res.status(200).json({
+        return res.status(200).json({
           token
         });
       }

@@ -12,25 +12,24 @@ async function getAll(req, res) {
       });
     }
     let search = req.query && req.query.search ? req.query.search : '';
-    let filter =
-      req.query && req.query.filter ? JSON.parse(req.query.filter) : {};
     let where = {};
 
     let limit = limitFilter(req);
     let skip = skipFilter(req, limit);
-    let sort = sortFilter(filter);
-    if (filter && filter.where) {
-      where = filter.where;
-    }
+    let sort = sortFilter(req);
 
     if (search && search != '') {
       where['$or'] = [
-        { firstName: { $regex: search } },
-        { lastName: { $regex: search } }
+        { firstName: { $regex: search, $options: 'i' } },
+        { lastName: { $regex: search, $options: 'i' } }
       ];
     }
 
-    const getAllResult = await User.find(where, { password: 0, role: 0 })
+    const getAllResult = await User.find(where, {
+      password: 0,
+      createdAt: 0,
+      updatedAt: 0
+    })
       .sort(sort)
       .limit(limit)
       .skip(skip);
@@ -60,7 +59,13 @@ async function getById(req, res) {
       });
     }
     let userId = mongoose.Types.ObjectId(req.params.id);
-    let getSingleResult = await User.findById(userId, { password: 0, role: 0 });
+    let getSingleResult = await User.findById(userId, {
+      id: 0,
+      password: 0,
+      role: 0,
+      createdAt: 0,
+      updatedAt: 0
+    });
     return res.status(constant.statusCode.OK).send({
       error: false,
       message: 'success',
@@ -76,13 +81,16 @@ async function getById(req, res) {
 }
 
 function limitFilter(req) {
-  let limit = 0;
-  if (req.query && req.query.limit && parseInt(req.query.limit, 10) > 0) {
+  let limit = constant.pageLimit;
+  if (
+    req.query &&
+    req.query.limit &&
+    parseInt(req.query.limit, 10) > 0 &&
+    parseInt(req.query.limit, 10) < 10
+  ) {
     limit = parseInt(req.query.limit, 10);
   }
-  if (limit > 10) {
-    limit = constant.pageLimit;
-  }
+
   return limit;
 }
 
@@ -94,11 +102,16 @@ function skipFilter(req, limit) {
   return skip;
 }
 
-function sortFilter(filter) {
-  let sort = {};
-  if (filter && filter.sort) {
-    sort = filter.sort;
-  }
+function sortFilter(req) {
+  // default sorting set to createdAt desc.
+  let sort = {
+    createdAt: -1
+  };
+  try {
+    if (req.query && req.query.sort) {
+      sort = { ...sort, ...JSON.parse(req.query.sort) };
+    }
+  } catch (e) {}
   return sort;
 }
 
