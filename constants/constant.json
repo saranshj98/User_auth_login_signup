@@ -14,5 +14,6 @@
     "VALIDATION": 422,
     "INTERNAL_SERVER": 500,
     "NOT_IMPLEMENTED": 501
-  }
+  },
+  "pageLimit": 10
 }

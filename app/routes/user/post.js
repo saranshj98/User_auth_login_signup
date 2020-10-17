@@ -21,7 +21,8 @@ async function createUser(req, res) {
 
     const payload = {
       user: {
-        id: user.id
+        id: user.id,
+        role: user.role
       }
     };
 
@@ -45,7 +46,52 @@ async function createUser(req, res) {
 }
 
 //user try to login
-const login = async (req, res) => {};
+async function login(req, res) {
+  const { email, password } = req.body;
+  try {
+    let user = await User.findOne({
+      email
+    });
+    if (!user) {
+      return res.status(400).json({
+        message: 'User Not Exist'
+      });
+    }
+
+    const isMatch = user.validPassword(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({
+        message: 'Incorrect Password !'
+      });
+    }
+
+    const payload = {
+      user: {
+        id: user.id,
+        role: user.role
+      }
+    };
+
+    jwt.sign(
+      payload,
+      secretKeyValue,
+      {
+        expiresIn: 10000
+      },
+      (err, token) => {
+        if (err) throw err;
+        res.status(200).json({
+          token
+        });
+      }
+    );
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({
+      message: 'Internal Server Error'
+    });
+  }
+}
 
 module.exports = {
   createUser,

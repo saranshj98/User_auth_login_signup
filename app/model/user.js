@@ -34,8 +34,9 @@ const UserSchema = new Schema(
     }
   },
   {
-    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
-    collection: 'User'
+    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+    collection: 'user',
+    versionKey: false
   }
 );
 
@@ -49,7 +50,7 @@ UserSchema.methods.validPassword = function (password) {
   return bcrypt.compareSync(md5Pass, this.password);
 };
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('user', UserSchema);
 
 //bcrypt.hashSync(data, salt, null);
 //genSaltSync(8) - default value is 10.

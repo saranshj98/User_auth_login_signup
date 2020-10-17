@@ -1,11 +1,14 @@
 const Joi = require('@hapi/joi');
-const constant = require('../../constants');
+const constant = require('../../constants/constant');
 
 const validator = (schemaName) => {
   return async (req, res, next) => {
     let validationResult = schemaDefinition[schemaName].validate(req.body);
     if (validationResult && validationResult.error) {
-      return res.status(constant.statusCode.VALIDATION).send('invalid request');
+      return res.status(constant.statusCode.VALIDATION).send({
+        error: true,
+        message: 'invalid request'
+      });
     }
     next();
   };
@@ -24,15 +27,8 @@ const schemaDefinition = {
     organizationName: Joi.string().min(1).required()
   }),
   userLogin: Joi.object({
-    firstName: Joi.string().required(),
-    lastName: Joi.string().required(),
-    email: Joi.string().email().lowercase().required(),
-    password: Joi.string().min(7).required().strict(),
-    confirmPassword: Joi.string()
-      .valid(Joi.ref('password'))
-      .required()
-      .strict(),
-    organizationName: Joi.string()
+    email: Joi.string().trim().email().lowercase().required(),
+    password: Joi.string().required().strict()
   })
 };
 
