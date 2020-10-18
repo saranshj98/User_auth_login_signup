@@ -1,6 +1,10 @@
 const Joi = require('@hapi/joi');
 const constant = require('../../constants/constant');
 
+/**
+ * request validation using joi
+ * @param {*} schemaName
+ */
 const validator = (schemaName) => {
   return async (req, res, next) => {
     let validationResult = schemaDefinition[schemaName].validate(req.body);

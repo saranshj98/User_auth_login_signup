@@ -3,6 +3,11 @@ const constant = require('../../../constants/constant');
 const logger = require('../../helpers/logger');
 const User = require('../../model/user');
 
+/**
+ * to access all user list, we will authenticate based on role - admin
+ * @param {*} req
+ * @param {*} res
+ */
 async function getAll(req, res) {
   try {
     if (req.body && req.body.role !== 'admin') {
@@ -37,7 +42,7 @@ async function getAll(req, res) {
 
     return res.status(constant.statusCode.OK).send({
       error: false,
-      message: 'success',
+      message: constant.messages.SUCCESS,
       responseData: getAllResult,
       totalRecords: getTotalCount
     });
@@ -50,6 +55,11 @@ async function getAll(req, res) {
   }
 }
 
+/**
+ * to access a single user data by Id, authentication will be based on role & userId
+ * @param {*} req
+ * @param {*} res
+ */
 async function getById(req, res) {
   try {
     if (req.body && req.params && req.body.id !== req.params.id) {
@@ -68,7 +78,7 @@ async function getById(req, res) {
     });
     return res.status(constant.statusCode.OK).send({
       error: false,
-      message: 'success',
+      message: constant.messages.SUCCESS,
       responseData: getSingleResult
     });
   } catch (error) {
@@ -80,6 +90,10 @@ async function getById(req, res) {
   }
 }
 
+/**
+ * set default and upper limit to 10.
+ * @param {*} req
+ */
 function limitFilter(req) {
   let limit = constant.pageLimit;
   if (

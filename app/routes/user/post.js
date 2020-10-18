@@ -2,15 +2,20 @@ const User = require('../../model/user');
 const logger = require('../../helpers/logger');
 const jwt = require('jsonwebtoken');
 const { secretKeyValue } = require('../../../config/config');
+const constant = require('../../../constants/constant');
 
-//user try to signup
+/**
+ * user try to signup
+ * @param {*} req
+ * @param {*} res
+ */
 async function createUser(req, res) {
   const { email, password } = req.body;
   try {
     let userDoc = await User.findOne({ email });
 
     if (userDoc) {
-      return res.status(400).json({
+      return res.status(constant.statusCode.BAD_REQUEST).json({
         error: true,
         message: 'User Already Exists'
       });
@@ -35,18 +40,24 @@ async function createUser(req, res) {
       },
       (err, token) => {
         if (err) throw err;
-        return res.status(200).send({
+        return res.status(constant.statusCode.OK).send({
           token
         });
       }
     );
   } catch (error) {
     logger.error(error);
-    res.status(500).send('Internal server error');
+    res
+      .status(constant.statusCode.INTERNAL_SERVER)
+      .send('Internal server error');
   }
 }
 
-//user try to login
+/**
+ * user try to login
+ * @param {*} req
+ * @param {*} res
+ */
 async function login(req, res) {
   const { email, password } = req.body;
   try {
@@ -54,7 +65,7 @@ async function login(req, res) {
       email
     });
     if (!user) {
-      return res.status(400).json({
+      return res.status(constant.statusCode.BAD_REQUEST).json({
         error: true,
         message: 'User Not Exist'
       });
@@ -62,7 +73,7 @@ async function login(req, res) {
 
     const isMatch = user.validPassword(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({
+      return res.status(constant.statusCode.BAD_REQUEST).json({
         error: true,
         message: 'Incorrect Password !'
       });
@@ -83,14 +94,14 @@ async function login(req, res) {
       },
       (err, token) => {
         if (err) throw err;
-        return res.status(200).json({
+        return res.status(constant.statusCode.OK).json({
           token
         });
       }
     );
   } catch (error) {
     logger.error(error);
-    res.status(500).json({
+    res.status(constant.statusCode.INTERNAL_SERVER).json({
       message: 'Internal Server Error'
     });
   }
