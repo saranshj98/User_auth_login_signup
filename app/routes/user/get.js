@@ -13,7 +13,7 @@ async function getAll(req, res) {
     if (req.body && req.body.role !== 'admin') {
       return res.status(constant.statusCode.BAD_REQUEST).send({
         error: true,
-        message: 'Unauthorized user.'
+        message: 'Unauthorized user'
       });
     }
     let search = req.query && req.query.search ? req.query.search : '';
@@ -62,15 +62,20 @@ async function getAll(req, res) {
  */
 async function getById(req, res) {
   try {
-    if (req.body && req.params && req.body.id !== req.params.id) {
+    if (
+      req.body &&
+      req.params &&
+      req.body.role !== 'admin' &&
+      req.body.id !== req.params.id
+    ) {
       return res.status(constant.statusCode.BAD_REQUEST).send({
         error: true,
-        message: 'Unauthorized user.'
+        message: 'Unauthorized user'
       });
     }
     let userId = mongoose.Types.ObjectId(req.params.id);
     let getSingleResult = await User.findById(userId, {
-      id: 0,
+      _id: 0,
       password: 0,
       role: 0,
       createdAt: 0,
